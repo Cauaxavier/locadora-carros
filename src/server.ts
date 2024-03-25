@@ -6,11 +6,12 @@ import routers from './routers/router'
 dotenv.config()
 
 const app = express()
+const port = Number(process.env.PORT)
 
 app.use(cors())
 app.use(express.json())
 app.use(routers)
 
-app.listen(process.env.PORT, () => {
-    console.log(`server running in port ${process.env.PORT}`)
+app.listen(port, () => {
+    console.log(`server running in port ${port}`)
 })

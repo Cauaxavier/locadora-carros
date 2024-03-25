@@ -1,9 +1,13 @@
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 export default {
     db: {
-        host: process.env.DB_HOST,
+        host: String(process.env.DB_HOST),
         port: Number(process.env.DB_PORT),
-        user: process.env.DB_USER,
+        user: String(process.env.DB_USER),
         password: String(process.env.DB_PASS),
-        database: process.env.DB_NAME
+        database: String(process.env.DB_NAME)
     }
 }
