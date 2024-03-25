@@ -1,21 +1,57 @@
 import { Request, Response } from 'express'
-import { register_user } from '../data/users-sql';
+import { get_user_by_email, register_user } from '../data/users-sql';
+import { compare, hash } from 'bcrypt'
+import { z } from 'zod'
+import { createToken } from '../data/auth-admin-token'
 
-type Erro = {
-    message: string
-}
+export default { 
+    async registerUser(req: Request, res: Response) {
+        const userData = req.body;
 
-export const registerUser = async (req: Request, res: Response) => {
-    const user_data = req.body;
+        try {
+            const encryptedPassword = await hash(userData.password, 10)
+            
+            userData.password = encryptedPassword
+            
+            const user = await register_user(userData)
 
-    try {
+            const { password:_, cpf:__, ...userInfo } = user
+            
+            return res.status(200).json(userInfo)
+        } catch(error)  {
+            return res.status(500).json({ message: 'Internal Server Error' })
+        }
+    },
+
+    async login(req: Request, res: Response) {
+        const loginSchema = z.object({
+            email: z.string().email(),
+            password: z.string().min(5)
+        })
+    
+        const { email, password } = loginSchema.parse(req.body)
+    
+        try {
+            const user = await get_user_by_email(email)
         
-        const user = await register_user(user_data)
+            if (!user) {
+                return res.status(401).json({ message: 'email or password invalid.' })
+            }
         
-        return res.status(200).json(user)
-    } catch(error)  {
-        const erro = error as Erro
-        console.log(erro.message);
-        return res.status(500).json({ message: 'Error in server' })
-    }
-}
+            const isEqual = await compare(password, user.password)
+        
+            if (!isEqual) {
+                return res.status(401).json({ message: 'email or password invalid.' })
+            }
+    
+            const token = createToken({ id: user.id! })
+        
+            const { password:_, cpf:__,  ...userInfo} = user
+    
+            return res.status(202).json({ userInfo, token })
+            
+        } catch (error) { 
+            return res.status(500).json({ message:'Internal Server Error' })
+        }
+    }  
+}    
