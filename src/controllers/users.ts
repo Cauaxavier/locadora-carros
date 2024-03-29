@@ -35,13 +35,13 @@ export default {
             const user = await get_user_by_email(email)
         
             if (!user) {
-                return res.status(401).json({ message: 'email or password invalid.' })
+                return res.status(401).json({ message: 'Email or password invalid.' })
             }
         
             const isEqual = await compare(password, user.password)
         
             if (!isEqual) {
-                return res.status(401).json({ message: 'email or password invalid.' })
+                return res.status(401).json({ message: 'Email or password invalid.' })
             }
     
             const token = createToken({ id: user.id! })

@@ -5,3 +5,7 @@ export type User = {
     cpf: string,
     password: string,
 }
+
+export type JoiSchema = {
+    validateAsync: (value: any) => Promise<any>
+}
