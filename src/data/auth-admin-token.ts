@@ -1,4 +1,4 @@
-import { Secret, sign, verify } from 'jsonwebtoken'
+import { sign, verify } from 'jsonwebtoken'
 import env from '../config/env'
 
 export const createToken = (user: { id: number }): string => {

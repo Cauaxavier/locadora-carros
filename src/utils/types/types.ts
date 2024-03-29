@@ -9,3 +9,11 @@ export type User = {
 export type JoiSchema = {
     validateAsync: (value: any) => Promise<any>
 }
+
+declare global {
+    namespace Express {
+      interface Request {
+        userID?: string;
+      }
+    }
+}

@@ -28,7 +28,7 @@ export default {
             email: z.string().email(),
             password: z.string().min(5)
         })
-    
+
         const { email, password } = loginSchema.parse(req.body)
     
         try {
@@ -50,7 +50,7 @@ export default {
     
             return res.status(202).json({ userInfo, token })
             
-        } catch (error) { 
+        } catch {    
             return res.status(500).json({ message:'Internal Server Error' })
         }
     }  
