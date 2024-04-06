@@ -1,9 +1,17 @@
 export type User = {
-    id?: number
+    id?: number,
     name: string,
     email: string,
     cpf: string,
     password: string,
+}
+
+export type Car = {
+  id?: number,
+  model: string,
+  brand: string,
+  color: string,
+  user_id: string
 }
 
 export type JoiSchema = {

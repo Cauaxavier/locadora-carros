@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { registerCar } from '../controllers/cars'
+import carsController from '../controllers/cars'
 import usersController from '../controllers/users'
 import validateBody from '../middlewares/validation-schema'
 import authMiddleware from '../middlewares/auth_middleware'
@@ -11,6 +11,7 @@ routers.post('/users', validateBody(usersCreateMiddleware) ,usersController.regi
 routers.post('/login', usersController.login)
 
 routers.use(authMiddleware)
-routers.post('/cars', registerCar)
+routers.post('/cars', carsController.registerCar)
+
 
 export default routers

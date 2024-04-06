@@ -18,7 +18,7 @@ export default {
             const { password:_, cpf:__, ...userInfo } = user
             
             return res.status(200).json(userInfo)
-        } catch(error)  {
+        } catch  {
             return res.status(500).json({ message: 'Internal Server Error' })
         }
     },
