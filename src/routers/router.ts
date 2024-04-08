@@ -4,14 +4,15 @@ import usersController from '../controllers/users'
 import validateBody from '../middlewares/validation-schema'
 import authMiddleware from '../middlewares/auth_middleware'
 import usersCreateMiddleware from '../schemas/users-create'
+import usersLoginMiddleware from '../schemas/users-login'
 
 const routers = Router()
 
 routers.post('/users', validateBody(usersCreateMiddleware) ,usersController.registerUser)
-routers.post('/login', usersController.login)
+routers.post('/login', validateBody(usersLoginMiddleware), usersController.login)
+routers.get('/cars', carsController.listCars)
 
 routers.use(authMiddleware)
 routers.post('/cars', carsController.registerCar)
-
 
 export default routers

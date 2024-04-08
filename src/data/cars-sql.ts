@@ -2,7 +2,6 @@ import { QueryResult } from "pg";
 import { Car } from "../utils/types/types";
 import pool from "../config/conexao";
 
-
 export default {
 
     async register(car_data: Car): Promise<Car> {
@@ -16,5 +15,15 @@ export default {
         const result: QueryResult = await pool.query(sql, values)
         
         return result.rows[0]
+    },
+
+    async list() {
+        const sql = /*sql*/ `
+            SELECT * FROM cars
+        `
+
+        const result: QueryResult = await pool.query(sql)
+
+        return result.rows
     }
 }

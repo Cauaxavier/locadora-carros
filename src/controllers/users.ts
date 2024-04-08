@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { get_user_by_email, register_user } from '../data/users-sql';
+import { get_user_by_cpf, get_user_by_email, register_user } from '../data/users-sql';
 import { compare, hash } from 'bcrypt'
 import { z } from 'zod'
 import { createToken } from '../data/auth-admin-token'
@@ -9,6 +9,19 @@ export default {
         const userData = req.body;
 
         try {
+
+            const emailEqual = await get_user_by_email(userData.email)
+
+            if (emailEqual) {
+                return res.status(400).json({ message: "This email is already used. Try again." })
+            }
+
+            const cpfEqual = await get_user_by_cpf(userData.cpf)
+
+            if (cpfEqual) {
+                return res.status(400).json({ message: "This cpf is already used. Try again." })
+            }
+
             const encryptedPassword = await hash(userData.password, 10)
             
             userData.password = encryptedPassword
@@ -18,7 +31,7 @@ export default {
             const { password:_, cpf:__, ...userInfo } = user
             
             return res.status(200).json(userInfo)
-        } catch  {
+        } catch {
             return res.status(500).json({ message: 'Internal Server Error' })
         }
     },

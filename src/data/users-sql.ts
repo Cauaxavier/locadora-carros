@@ -27,6 +27,17 @@ export const get_user_by_email = async (email: string): Promise<User> => {
     return result.rows[0]
 }
 
+export const get_user_by_cpf = async (cpf: string): Promise<User> => {
+
+    const sql = /*sql*/ `
+        SELECT * FROM users WHERE cpf = $1
+    `
+
+    const result: QueryResult = await pool.query(sql, [cpf])
+
+    return result.rows[0]
+}
+
 export const get_user_by_id = async (id: number): Promise<User> => {
 
     const sql = /*sql*/ `

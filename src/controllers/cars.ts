@@ -25,5 +25,15 @@ export default {
             console.log(erro.message)
             return res.status(500).json({ message: 'Internal Server Error' })
         }
+    },
+
+    async listCars(req: Request, res: Response) {
+        try {
+            const cars = await sqlCars.list()
+
+            return res.status(200).json(cars)
+        } catch (error) {
+            return res.status(500).json({ message: 'Internal Server Error' })
+        }
     }
 }
