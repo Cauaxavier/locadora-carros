@@ -6,7 +6,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     const bearer = req.headers.authorization!
 
     const idSchema = z.object({
-        id: z.number()
+        id: z.number().optional()
     })
 
     if (!bearer) {

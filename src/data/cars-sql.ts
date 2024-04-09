@@ -25,5 +25,27 @@ export default {
         const result: QueryResult = await pool.query(sql)
 
         return result.rows
+    },
+
+    async listMyCars(user_id: number) {
+        const sql = /*sql*/ `
+            SELECT * FROM cars WHERE user_id = $1
+        `
+
+        const result: QueryResult = await pool.query(sql, [user_id])
+        
+        return result.rows
+    },
+
+    async updateCar(car: Car, id: number): Promise<void> {
+        const sql = /*sql*/ `
+            UPDATE cars set model = $1, brand = $2, color = $3 
+            WHERE id = $4 AND user_id = $5;
+        `
+
+        const values = [car.model, car.brand, car.color, String(id), car.user_id]
+
+        await pool.query(sql, values)
+
     }
 }

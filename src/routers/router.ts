@@ -8,11 +8,13 @@ import usersLoginMiddleware from '../schemas/users-login'
 
 const routers = Router()
 
-routers.post('/users', validateBody(usersCreateMiddleware) ,usersController.registerUser)
+routers.post('/users', validateBody(usersCreateMiddleware), usersController.registerUser)
 routers.post('/login', validateBody(usersLoginMiddleware), usersController.login)
 routers.get('/cars', carsController.listCars)
 
 routers.use(authMiddleware)
 routers.post('/cars', carsController.registerCar)
+routers.post('/cars/me', carsController.listMyCars)
+routers.put('/cars/:id', carsController.updateCar)
 
 export default routers
