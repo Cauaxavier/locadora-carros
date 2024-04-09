@@ -17,7 +17,7 @@ export default {
         return result.rows[0]
     },
 
-    async list() {
+    async list(): Promise<Car[]> {
         const sql = /*sql*/ `
             SELECT * FROM cars
         `
@@ -27,7 +27,7 @@ export default {
         return result.rows
     },
 
-    async listMyCars(user_id: number) {
+    async listMyCars(user_id: number): Promise<Car[]> {
         const sql = /*sql*/ `
             SELECT * FROM cars WHERE user_id = $1
         `
@@ -47,5 +47,14 @@ export default {
 
         await pool.query(sql, values)
 
+    },
+
+    async deleteCar(car_id: string, user_id: string): Promise<void> {
+        const sql = /*sql*/ `
+            DELETE from cars WHERE id = $1 AND user_id = $2
+        `
+
+        await pool.query(sql, [car_id, user_id])   
     }
+
 }

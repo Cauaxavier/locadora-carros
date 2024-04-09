@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { get_user_by_id } from '../data/users-sql'
 import sqlCars from '../data/cars-sql'
-import pool from '../config/conexao'
 
 type Erro = {
     message: string
@@ -41,7 +40,7 @@ export default {
             const myCars = await sqlCars.listMyCars(Number(req.userID))
 
             return res.status(200).json(myCars)
-        } catch (error) {
+        } catch {
             return res.status(500).json({ message: 'Internal Server Error' })
         }
     },
@@ -57,10 +56,25 @@ export default {
             
             return res.status(200).json()
 
-        } catch(error) {
-            const erro = error as Erro
-            console.log(erro.message);
+        } catch {
             return res.status(500).json({ message: 'Internal Server Error' })
+        }
+    },
+
+    async deleteCar(req: Request, res: Response) {
+        const id = req.params.id
+
+        try {
+            
+            await sqlCars.deleteCar(id, req.userID!)
+
+            return res.status(200).json()
+
+        } catch (error) {
+            const erro = error as Erro
+            console.log(erro.message)
+            return res.status(500).json({ message: 'Internal Server Error' })
+
         }
     }
 }
